@@ -25,11 +25,13 @@
 package org.netbeans.modules.php.apigen.actions.ui;
 
 import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import org.openide.DialogDescriptor;
+import org.openide.util.ImageUtilities;
 
 /**
  *
@@ -37,17 +39,21 @@ import org.openide.DialogDescriptor;
  */
 public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentListener {
 
+	private static final String OUTPUT_CFG_FILE_TYPE = ".neon";
+
 	private DialogDescriptor dd;
+
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/apigen/resources/error_icon.png", true);
 
     /** Creates new form ApiGenActionPanel */
     public ApiGenActionPanel() {
         initComponents();
-
+		errorLabel.setText("");
 		outputCfgFileChooser.setFileFilter(new FileFilter() {
 
 			@Override
 			public boolean accept(File f) {
-				if (f.isDirectory() || f.getName().endsWith(".neon")) {
+				if (f.isDirectory() || f.getName().endsWith(OUTPUT_CFG_FILE_TYPE)) {
 					return true;
 				}
 
@@ -85,6 +91,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
         sourceDirectoryButton = new javax.swing.JButton();
         targetDirectoryButton = new javax.swing.JButton();
         outputCfgFileButton = new javax.swing.JButton();
+        errorLabel = new javax.swing.JLabel();
 
         outputCfgFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileChooser.dialogTitle")); // NOI18N
         outputCfgFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
@@ -137,6 +144,9 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
             }
         });
 
+        errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
+        errorLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.errorLabel.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,23 +154,26 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(documentationTitleLabel)
-                    .addComponent(outputCfgFileLabel)
-                    .addComponent(sourceDirectoryLabel)
-                    .addComponent(targetDirectoryLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(outputCfgFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                            .addComponent(targetDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                            .addComponent(sourceDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(documentationTitleLabel)
+                            .addComponent(outputCfgFileLabel)
+                            .addComponent(sourceDirectoryLabel)
+                            .addComponent(targetDirectoryLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sourceDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(targetDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(outputCfgFileButton, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addComponent(documentationTitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(outputCfgFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addComponent(targetDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addComponent(sourceDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(sourceDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(targetDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(outputCfgFileButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(documentationTitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
+                    .addComponent(errorLabel))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -185,7 +198,9 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(documentationTitleLabel)
                     .addComponent(documentationTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(errorLabel)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -251,6 +266,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel documentationTitleLabel;
     private javax.swing.JTextField documentationTitleTextField;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JButton outputCfgFileButton;
     private javax.swing.JFileChooser outputCfgFileChooser;
     private javax.swing.JLabel outputCfgFileLabel;
@@ -270,6 +286,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 	   sourceDirectoryTextField.getDocument().addDocumentListener(this);
 	   targetDirectoryTextField.getDocument().addDocumentListener(this);
+	   outputCfgFileTextField.getDocument().addDocumentListener(this);
 
 	   doEnablement();
     }
@@ -290,13 +307,26 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 	}
 
 	private void doEnablement() {
-		if (sourceDirectoryTextField.getText().isEmpty()
-				|| !(new File(sourceDirectoryTextField.getText()).isDirectory())
-				|| targetDirectoryTextField.getText().isEmpty()
-				|| !(new File(targetDirectoryTextField.getText()).isDirectory())) {
+		if (sourceDirectoryTextField.getText().isEmpty() || !(new File(sourceDirectoryTextField.getText()).isDirectory())) {
 			dd.setValid(false);
+
+			errorLabel.setIcon(errorIcon);
+			errorLabel.setText("Source directory must be a valid directory.");
+		} else if (targetDirectoryTextField.getText().isEmpty() || !(new File(targetDirectoryTextField.getText()).isDirectory())) {
+			dd.setValid(false);
+
+			errorLabel.setIcon(errorIcon);
+			errorLabel.setText("Target directory must be a valid directory.");
+		} else if (!outputCfgFileTextField.getText().endsWith(OUTPUT_CFG_FILE_TYPE) && !outputCfgFileTextField.getText().isEmpty()) {
+			dd.setValid(false);
+
+			errorLabel.setIcon(errorIcon);
+			errorLabel.setText("Output config file must be a NEON file.");
 		} else {
 			dd.setValid(true);
+
+			errorLabel.setIcon(null);
+			errorLabel.setText("");
 		}
 	}
 

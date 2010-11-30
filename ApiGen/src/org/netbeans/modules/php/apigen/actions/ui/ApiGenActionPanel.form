@@ -45,27 +45,32 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="documentationTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="outputCfgFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="sourceDirectoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="targetDirectoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="outputCfgFileTextField" alignment="1" pref="177" max="32767" attributes="0"/>
-                          <Component id="targetDirectoryTextField" alignment="1" pref="177" max="32767" attributes="0"/>
-                          <Component id="sourceDirectoryTextField" alignment="1" pref="177" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="documentationTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="outputCfgFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="sourceDirectoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="targetDirectoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sourceDirectoryButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="targetDirectoryButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="outputCfgFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="outputCfgFileTextField" alignment="1" pref="177" max="32767" attributes="0"/>
+                                  <Component id="targetDirectoryTextField" alignment="1" pref="177" max="32767" attributes="0"/>
+                                  <Component id="sourceDirectoryTextField" alignment="1" pref="177" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="sourceDirectoryButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="targetDirectoryButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="outputCfgFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="documentationTitleTextField" pref="250" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="documentationTitleTextField" pref="250" max="32767" attributes="0"/>
+                  <Component id="errorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -97,7 +102,9 @@
                   <Component id="documentationTitleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="documentationTitleTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Component id="errorLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -197,6 +204,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="outputCfgFileButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="errorLabel">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" id="nb.errorForeground" palette="3" red="ff" type="palette"/>
+        </Property>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/netbeans/modules/php/apigen/actions/ui/Bundle.properties" key="ApiGenActionPanel.errorLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
