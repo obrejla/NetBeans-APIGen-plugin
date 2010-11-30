@@ -71,7 +71,7 @@ public class GenerateApiAction extends AbstractAction {
 		panel.setSourceDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
 		panel.setTargetDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
 		
-		DialogDescriptor dd = new DialogDescriptor(panel, "ApiGen Settings", true, new ApiGenActionListener(panel, phpModule));
+		DialogDescriptor dd = new DialogDescriptor(panel, NbBundle.getMessage(GenerateApiAction.class, "LBL_DialogTitle"), true, new ApiGenActionListener(panel, phpModule));
 		panel.setDialogDescriptor(dd);
 		
 		DialogDisplayer.getDefault().notify(dd);

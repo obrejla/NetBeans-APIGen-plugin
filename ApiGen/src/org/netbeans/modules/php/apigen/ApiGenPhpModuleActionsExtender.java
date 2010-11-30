@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.Action;
 import org.netbeans.modules.php.apigen.actions.GenerateApiAction;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleActionsExtender;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -50,7 +51,7 @@ public class ApiGenPhpModuleActionsExtender extends PhpModuleActionsExtender {
 
     @Override
     public String getMenuName() {
-        return "ApiGen";
+        return NbBundle.getMessage(ApiGenPhpModuleActionsExtender.class, "LBL_MenuName");
     }
 
     @Override

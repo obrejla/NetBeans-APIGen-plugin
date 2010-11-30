@@ -63,7 +63,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 			@Override
 			public String getDescription() {
-				return "Output Config file [*.neon]";
+				return NbBundle.getMessage(ApiGenActionPanel.class, "LBL_FileFilterDesc");
 			}
 
 		});
