@@ -314,7 +314,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 			errorLabel.setIcon(errorIcon);
 			errorLabel.setText("Target directory must be a valid directory.");
-		} else if (!outputCfgFileTextField.getText().endsWith(OUTPUT_CFG_FILE_TYPE) && !outputCfgFileTextField.getText().isEmpty()) {
+		} else if ((!(new File(outputCfgFileTextField.getText()).exists()) || !outputCfgFileTextField.getText().endsWith(OUTPUT_CFG_FILE_TYPE)) && !outputCfgFileTextField.getText().isEmpty()) {
 			dd.setValid(false);
 
 			errorLabel.setIcon(errorIcon);
