@@ -64,16 +64,20 @@ public class ApiGenActionListener implements ActionListener {
 			String path = PhpOptions.getInstance().getPhpInterpreter();
 
 			ExternalProcessBuilder processBuilder = new ExternalProcessBuilder(path)
+					.workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()))
 					.addArgument(NbPreferences.forModule(GenerateApiAction.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, ""))
 					.addArgument("-s")
 					.addArgument(panel.getSourceDirectory())
 					.addArgument("-d")
-					.addArgument(panel.getTargetDirectory())
-					.addArgument("-c")
-					.addArgument(panel.getOutputCfgFile())
-					.addArgument("-t")
-					.addArgument(panel.getDocumentationTitle())
-					.workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()));
+					.addArgument(panel.getTargetDirectory());
+
+			if (!panel.getOutputCfgFile().trim().isEmpty()) {
+				processBuilder.addArgument("-c").addArgument(panel.getOutputCfgFile());
+			}
+
+			if (!panel.getDocumentationTitle().trim().isEmpty()) {
+				processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle());
+			}
 
 			ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
 			service.run();
