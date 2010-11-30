@@ -146,7 +146,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="sourceDirectoryTextField">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/netbeans/modules/php/apigen/actions/ui/Bundle.properties" key="ApiGenActionPanel.sourceDirectoryTextField.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
@@ -154,7 +153,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="targetDirectoryTextField">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/netbeans/modules/php/apigen/actions/ui/Bundle.properties" key="ApiGenActionPanel.targetDirectoryTextField.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
@@ -162,7 +160,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="outputCfgFileTextField">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/netbeans/modules/php/apigen/actions/ui/Bundle.properties" key="ApiGenActionPanel.outputCfgFileTextField.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>

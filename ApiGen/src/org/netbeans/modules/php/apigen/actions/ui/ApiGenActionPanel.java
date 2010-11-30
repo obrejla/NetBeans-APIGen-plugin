@@ -112,13 +112,10 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
         documentationTitleLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.documentationTitleLabel.text")); // NOI18N
 
-        sourceDirectoryTextField.setEditable(false);
         sourceDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.sourceDirectoryTextField.text")); // NOI18N
 
-        targetDirectoryTextField.setEditable(false);
         targetDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.targetDirectoryTextField.text")); // NOI18N
 
-        outputCfgFileTextField.setEditable(false);
         outputCfgFileTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileTextField.text")); // NOI18N
 
         documentationTitleTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.documentationTitleTextField.text")); // NOI18N
