@@ -26,6 +26,7 @@ package org.netbeans.modules.php.apigen.actions.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import org.netbeans.api.extexecution.ExecutionDescriptor;
 import org.netbeans.api.extexecution.ExecutionService;
 import org.netbeans.api.extexecution.ExternalProcessBuilder;
@@ -33,6 +34,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.apigen.actions.GenerateApiAction;
 import org.netbeans.modules.php.apigen.options.ApiGenPanel;
 import org.netbeans.modules.php.project.ui.options.PhpOptions;
+import org.openide.DialogDescriptor;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
 import org.openide.util.NbPreferences;
@@ -47,31 +49,37 @@ public class ApiGenActionListener implements ActionListener {
 
 	private ApiGenActionPanel panel;
 
-	public ApiGenActionListener(ApiGenActionPanel panel) {
+	private PhpModule phpModule;
+
+	public ApiGenActionListener(ApiGenActionPanel panel, PhpModule phpModule) {
 		this.panel = panel;
+		this.phpModule = phpModule;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PhpModule phpModule = PhpModule.inferPhpModule();
-        if (phpModule == null) {
-            return;
-        }
+		if (e.getSource() == DialogDescriptor.OK_OPTION) {
+			ExecutionDescriptor descriptor = new ExecutionDescriptor().frontWindow(true).controllable(true);
 
-		ExecutionDescriptor descriptor = new ExecutionDescriptor().frontWindow(true).controllable(true);
+			String path = PhpOptions.getInstance().getPhpInterpreter();
 
-		String path = PhpOptions.getInstance().getPhpInterpreter();
+			ExternalProcessBuilder processBuilder = new ExternalProcessBuilder(path)
+					.addArgument(NbPreferences.forModule(GenerateApiAction.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, ""))
+					.addArgument("-s")
+					.addArgument(panel.getSourceDirectory())
+					.addArgument("-d")
+					.addArgument(panel.getTargetDirectory())
+					.addArgument("-c")
+					.addArgument(panel.getOutputCfgFile())
+					.addArgument("-t")
+					.addArgument(panel.getDocumentationTitle())
+					.workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()));
 
-		ExternalProcessBuilder processBuilder = new ExternalProcessBuilder(path).
-				addArgument(NbPreferences.forModule(GenerateApiAction.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, "")).
-				addArgument("-s").
-				addArgument(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath()).
-				addArgument("-d").
-				addArgument("/var/www/brejla.cz/apigen").
-				workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()));
+			ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
+			service.run();
 
-        ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
-        service.run();
+			FileUtil.refreshFor(new File(panel.getTargetDirectory()));
+		}
 	}
 
 }
