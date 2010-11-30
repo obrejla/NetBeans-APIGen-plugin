@@ -24,15 +24,42 @@
 
 package org.netbeans.modules.php.apigen.actions.ui;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import org.openide.DialogDescriptor;
+
 /**
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-public class ApiGenActionPanel extends javax.swing.JPanel {
+public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentListener {
+
+	private DialogDescriptor dd;
 
     /** Creates new form ApiGenActionPanel */
     public ApiGenActionPanel() {
         initComponents();
+
+		outputCfgFileChooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory() || f.getName().endsWith(".neon")) {
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public String getDescription() {
+				return "Output Config file [*.neon]";
+			}
+
+		});
     }
 
     /** This method is called from within the constructor to
@@ -44,20 +71,233 @@ public class ApiGenActionPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        outputCfgFileChooser = new javax.swing.JFileChooser();
+        sourceDirectoryFileChooser = new javax.swing.JFileChooser();
+        targetDirectoryFileChooser = new javax.swing.JFileChooser();
+        sourceDirectoryLabel = new javax.swing.JLabel();
+        targetDirectoryLabel = new javax.swing.JLabel();
+        outputCfgFileLabel = new javax.swing.JLabel();
+        documentationTitleLabel = new javax.swing.JLabel();
+        sourceDirectoryTextField = new javax.swing.JTextField();
+        targetDirectoryTextField = new javax.swing.JTextField();
+        outputCfgFileTextField = new javax.swing.JTextField();
+        documentationTitleTextField = new javax.swing.JTextField();
+        sourceDirectoryButton = new javax.swing.JButton();
+        targetDirectoryButton = new javax.swing.JButton();
+        outputCfgFileButton = new javax.swing.JButton();
+
+        outputCfgFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileChooser.dialogTitle")); // NOI18N
+        outputCfgFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
+
+        sourceDirectoryFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.sourceDirectoryFileChooser.dialogTitle")); // NOI18N
+        sourceDirectoryFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
+
+        targetDirectoryFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.targetDirectoryFileChooser.dialogTitle")); // NOI18N
+        targetDirectoryFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
+
+        sourceDirectoryLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 11));
+        sourceDirectoryLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.sourceDirectoryLabel.text")); // NOI18N
+
+        targetDirectoryLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 11));
+        targetDirectoryLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.targetDirectoryLabel.text")); // NOI18N
+
+        outputCfgFileLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileLabel.text")); // NOI18N
+
+        documentationTitleLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.documentationTitleLabel.text")); // NOI18N
+
+        sourceDirectoryTextField.setEditable(false);
+        sourceDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.sourceDirectoryTextField.text")); // NOI18N
+
+        targetDirectoryTextField.setEditable(false);
+        targetDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.targetDirectoryTextField.text")); // NOI18N
+
+        outputCfgFileTextField.setEditable(false);
+        outputCfgFileTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileTextField.text")); // NOI18N
+
+        documentationTitleTextField.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.documentationTitleTextField.text")); // NOI18N
+
+        sourceDirectoryButton.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.sourceDirectoryButton.text")); // NOI18N
+        sourceDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sourceDirectoryButtonActionPerformed(evt);
+            }
+        });
+
+        targetDirectoryButton.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.targetDirectoryButton.text")); // NOI18N
+        targetDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                targetDirectoryButtonActionPerformed(evt);
+            }
+        });
+
+        outputCfgFileButton.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileButton.text")); // NOI18N
+        outputCfgFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outputCfgFileButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(documentationTitleLabel)
+                    .addComponent(outputCfgFileLabel)
+                    .addComponent(sourceDirectoryLabel)
+                    .addComponent(targetDirectoryLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(outputCfgFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(targetDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(sourceDirectoryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sourceDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(targetDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(outputCfgFileButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(documentationTitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sourceDirectoryLabel)
+                    .addComponent(sourceDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sourceDirectoryButton))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(targetDirectoryLabel)
+                    .addComponent(targetDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(targetDirectoryButton))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(outputCfgFileLabel)
+                    .addComponent(outputCfgFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outputCfgFileButton))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(documentationTitleLabel)
+                    .addComponent(documentationTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+	private void sourceDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceDirectoryButtonActionPerformed
+		int result = sourceDirectoryFileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            setSourceDirectory(sourceDirectoryFileChooser.getSelectedFile().toString());
+        }
+	}//GEN-LAST:event_sourceDirectoryButtonActionPerformed
+
+	private void targetDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_targetDirectoryButtonActionPerformed
+		int result = targetDirectoryFileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            setTargetDirectory(targetDirectoryFileChooser.getSelectedFile().toString());
+        }
+	}//GEN-LAST:event_targetDirectoryButtonActionPerformed
+
+	private void outputCfgFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputCfgFileButtonActionPerformed
+		int result = outputCfgFileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            setOutputCfgFile(outputCfgFileChooser.getSelectedFile().toString());
+        }
+	}//GEN-LAST:event_outputCfgFileButtonActionPerformed
+
+	public void setDocumentationTitle(String title) {
+		documentationTitleTextField.setText(title);
+	}
+
+	public String getDocumentationTitle() {
+		return documentationTitleTextField.getText();
+	}
+
+	public void setOutputCfgFile(String path) {
+		outputCfgFileTextField.setText(path);
+		outputCfgFileChooser.setCurrentDirectory(new File(path));
+	}
+
+	public String getOutputCfgFile() {
+		return outputCfgFileTextField.getText();
+	}
+
+	public void setSourceDirectory(String path) {
+		sourceDirectoryTextField.setText(path);
+		sourceDirectoryFileChooser.setCurrentDirectory(new File(path));
+	}
+
+	public String getSourceDirectory() {
+		return sourceDirectoryTextField.getText();
+	}
+
+	public void setTargetDirectory(String path) {
+		targetDirectoryTextField.setText(path);
+		targetDirectoryFileChooser.setCurrentDirectory(new File(path));
+	}
+
+	public String getTargetDirectory() {
+		return targetDirectoryTextField.getText();
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel documentationTitleLabel;
+    private javax.swing.JTextField documentationTitleTextField;
+    private javax.swing.JButton outputCfgFileButton;
+    private javax.swing.JFileChooser outputCfgFileChooser;
+    private javax.swing.JLabel outputCfgFileLabel;
+    private javax.swing.JTextField outputCfgFileTextField;
+    private javax.swing.JButton sourceDirectoryButton;
+    private javax.swing.JFileChooser sourceDirectoryFileChooser;
+    private javax.swing.JLabel sourceDirectoryLabel;
+    private javax.swing.JTextField sourceDirectoryTextField;
+    private javax.swing.JButton targetDirectoryButton;
+    private javax.swing.JFileChooser targetDirectoryFileChooser;
+    private javax.swing.JLabel targetDirectoryLabel;
+    private javax.swing.JTextField targetDirectoryTextField;
     // End of variables declaration//GEN-END:variables
+
+	public void setDialogDescriptor(DialogDescriptor dd) {
+	   this.dd = dd;
+
+	   sourceDirectoryTextField.getDocument().addDocumentListener(this);
+	   targetDirectoryTextField.getDocument().addDocumentListener(this);
+
+	   doEnablement();
+    }
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	private void doEnablement() {
+		if (sourceDirectoryTextField.getText().isEmpty()
+				|| !(new File(sourceDirectoryTextField.getText()).isDirectory())
+				|| targetDirectoryTextField.getText().isEmpty()
+				|| !(new File(targetDirectoryTextField.getText()).isDirectory())) {
+			dd.setValid(false);
+		} else {
+			dd.setValid(true);
+		}
+	}
 
 }
