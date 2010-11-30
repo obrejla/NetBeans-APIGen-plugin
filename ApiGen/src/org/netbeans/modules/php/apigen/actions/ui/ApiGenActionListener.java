@@ -27,6 +27,8 @@ package org.netbeans.modules.php.apigen.actions.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import org.netbeans.api.extexecution.ExecutionDescriptor;
 import org.netbeans.api.extexecution.ExecutionService;
 import org.netbeans.api.extexecution.ExternalProcessBuilder;
@@ -36,6 +38,7 @@ import org.netbeans.modules.php.apigen.options.ApiGenPanel;
 import org.netbeans.modules.php.project.ui.options.PhpOptions;
 import org.openide.DialogDescriptor;
 import org.openide.filesystems.FileUtil;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 import org.openide.util.NbPreferences;
 
@@ -79,10 +82,24 @@ public class ApiGenActionListener implements ActionListener {
 				processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle());
 			}
 
-			ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
-			service.run();
+			final ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
 
-			FileUtil.refreshFor(new File(panel.getTargetDirectory()));
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					Future<Integer> task = service.run();
+					try {
+						task.get();
+						FileUtil.refreshFor(new File(panel.getTargetDirectory()));
+					} catch (InterruptedException ex) {
+						Exceptions.printStackTrace(ex);
+					} catch (ExecutionException ex) {
+						Exceptions.printStackTrace(ex);
+					}
+				}
+
+			}).start();
 		}
 	}
 
