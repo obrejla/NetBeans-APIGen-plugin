@@ -32,6 +32,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import org.openide.DialogDescriptor;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -308,17 +309,17 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 			dd.setValid(false);
 
 			errorLabel.setIcon(errorIcon);
-			errorLabel.setText("Source directory must be a valid directory.");
+			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_InvalidSourceDirectory"));
 		} else if (targetDirectoryTextField.getText().isEmpty() || !(new File(targetDirectoryTextField.getText()).isDirectory())) {
 			dd.setValid(false);
 
 			errorLabel.setIcon(errorIcon);
-			errorLabel.setText("Target directory must be a valid directory.");
+			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_InvalidTargetDirectory"));
 		} else if ((!(new File(outputCfgFileTextField.getText()).exists()) || !outputCfgFileTextField.getText().endsWith(OUTPUT_CFG_FILE_TYPE)) && !outputCfgFileTextField.getText().isEmpty()) {
 			dd.setValid(false);
 
 			errorLabel.setIcon(errorIcon);
-			errorLabel.setText("Output config file must be a NEON file.");
+			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_InvalidConfigFile"));
 		} else {
 			dd.setValid(true);
 
