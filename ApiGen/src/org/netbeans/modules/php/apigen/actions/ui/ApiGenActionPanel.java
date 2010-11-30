@@ -25,20 +25,25 @@
 package org.netbeans.modules.php.apigen.actions.ui;
 
 import java.io.File;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
+import org.netbeans.api.options.OptionsDisplayer;
+import org.netbeans.modules.php.apigen.options.ApiGenPanel;
 import org.openide.DialogDescriptor;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.NbPreferences;
 
 /**
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentListener {
+public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentListener, PreferenceChangeListener {
 
 	private static final String OUTPUT_CFG_FILE_TYPE = ".neon";
 
@@ -50,6 +55,9 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
     public ApiGenActionPanel() {
         initComponents();
 		errorLabel.setText("");
+
+		NbPreferences.forModule(ApiGenPanel.class).addPreferenceChangeListener(this);
+
 		outputCfgFileChooser.setFileFilter(new FileFilter() {
 
 			@Override
@@ -93,6 +101,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
         targetDirectoryButton = new javax.swing.JButton();
         outputCfgFileButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
+        optionsLabel = new javax.swing.JLabel();
 
         outputCfgFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.outputCfgFileChooser.dialogTitle")); // NOI18N
         outputCfgFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
@@ -145,6 +154,15 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
         errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
         errorLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.errorLabel.text")); // NOI18N
 
+        optionsLabel.setForeground(java.awt.Color.blue);
+        optionsLabel.setText(org.openide.util.NbBundle.getMessage(ApiGenActionPanel.class, "ApiGenActionPanel.optionsLabel.text")); // NOI18N
+        optionsLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        optionsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                optionsLabelMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,7 +189,8 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
                                     .addComponent(targetDirectoryButton, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(outputCfgFileButton, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(documentationTitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
-                    .addComponent(errorLabel))
+                    .addComponent(errorLabel)
+                    .addComponent(optionsLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -196,7 +215,9 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(documentationTitleLabel)
                     .addComponent(documentationTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(optionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(errorLabel)
                 .addContainerGap())
         );
@@ -225,6 +246,10 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
             setOutputCfgFile(outputCfgFileChooser.getSelectedFile().toString());
         }
 	}//GEN-LAST:event_outputCfgFileButtonActionPerformed
+
+	private void optionsLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_optionsLabelMouseReleased
+		OptionsDisplayer.getDefault().open(NbBundle.getMessage(ApiGenPanel.class, "MSG_OptionsPath"));
+	}//GEN-LAST:event_optionsLabelMouseReleased
 
 	public void setDocumentationTitle(String title) {
 		documentationTitleTextField.setText(title);
@@ -265,6 +290,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
     private javax.swing.JLabel documentationTitleLabel;
     private javax.swing.JTextField documentationTitleTextField;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel optionsLabel;
     private javax.swing.JButton outputCfgFileButton;
     private javax.swing.JFileChooser outputCfgFileChooser;
     private javax.swing.JLabel outputCfgFileLabel;
@@ -304,6 +330,11 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		doEnablement();
 	}
 
+	@Override
+	public void preferenceChange(PreferenceChangeEvent evt) {
+		doEnablement();
+	}
+
 	private void doEnablement() {
 		if (sourceDirectoryTextField.getText().isEmpty() || !(new File(sourceDirectoryTextField.getText()).isDirectory())) {
 			dd.setValid(false);
@@ -320,6 +351,11 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 			errorLabel.setIcon(errorIcon);
 			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_InvalidConfigFile"));
+		} else if (NbPreferences.forModule(ApiGenActionPanel.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, "").trim().isEmpty()) {
+			dd.setValid(false);
+
+			errorLabel.setIcon(errorIcon);
+			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_MissingApiGenPath"));
 		} else {
 			dd.setValid(true);
 
