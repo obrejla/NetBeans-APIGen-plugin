@@ -27,18 +27,13 @@
 
 package org.netbeans.modules.php.apigen.actions;
 
+import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionPanel;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.netbeans.api.extexecution.ExecutionDescriptor;
-import org.netbeans.api.extexecution.ExecutionService;
-import org.netbeans.api.extexecution.ExternalProcessBuilder;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.apigen.options.ApiGenPanel;
-import org.netbeans.modules.php.project.ui.options.PhpOptions;
-import org.openide.filesystems.FileUtil;
+import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionListener;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.util.NbBundle;
-import org.openide.util.NbPreferences;
-
 
 /**
  *
@@ -52,8 +47,6 @@ public class GenerateApiAction extends AbstractAction {
 
 	private String generateApiItem = NbBundle.getMessage(GenerateApiAction.class, "LBL_GenerateApiItem");
 
-	private String apiGenTab = NbBundle.getMessage(GenerateApiAction.class, "LBL_ApiGenTab");
-
 	public static GenerateApiAction getInstance() {
 		return INSTANCE;
 	}
@@ -66,25 +59,10 @@ public class GenerateApiAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PhpModule phpModule = PhpModule.inferPhpModule();
-        if (phpModule == null) {
-            return;
-        }
-
-		ExecutionDescriptor descriptor = new ExecutionDescriptor().frontWindow(true).controllable(true);
-
-		String path = PhpOptions.getInstance().getPhpInterpreter();
-
-		ExternalProcessBuilder processBuilder = new ExternalProcessBuilder(path).
-				addArgument(NbPreferences.forModule(GenerateApiAction.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, "")).
-				addArgument("-s").
-				addArgument(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath()).
-				addArgument("-d").
-				addArgument("/var/www/brejla.cz/apigen").
-				workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()));
-
-        ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
-        service.run();
+		ApiGenActionPanel panel = new ApiGenActionPanel();
+		
+		DialogDescriptor dd = new DialogDescriptor(panel, "ApiGen Settings", true, new ApiGenActionListener(panel));
+		DialogDisplayer.getDefault().notify(dd);
 	}
 
 }
