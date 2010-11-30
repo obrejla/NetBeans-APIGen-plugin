@@ -30,9 +30,11 @@ package org.netbeans.modules.php.apigen.actions;
 import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionPanel;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionListener;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
 
 /**
@@ -59,9 +61,19 @@ public class GenerateApiAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		PhpModule phpModule = PhpModule.inferPhpModule();
+        if (phpModule == null) {
+            return;
+        }
+
 		ApiGenActionPanel panel = new ApiGenActionPanel();
+		panel.setDocumentationTitle(phpModule.getName());
+		panel.setSourceDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
+		panel.setTargetDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
 		
-		DialogDescriptor dd = new DialogDescriptor(panel, "ApiGen Settings", true, new ApiGenActionListener(panel));
+		DialogDescriptor dd = new DialogDescriptor(panel, "ApiGen Settings", true, new ApiGenActionListener(panel, phpModule));
+		panel.setDialogDescriptor(dd);
+		
 		DialogDisplayer.getDefault().notify(dd);
 	}
 
