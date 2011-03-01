@@ -34,7 +34,6 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.apigen.ui.actions.ApiGenActionListener;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
 
 /**
@@ -66,10 +65,7 @@ public class GenerateApiAction extends AbstractAction {
             return;
         }
 
-		ApiGenActionPanel panel = new ApiGenActionPanel();
-		panel.setDocumentationTitle(phpModule.getName());
-		panel.setSourceDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
-		panel.setTargetDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
+		ApiGenActionPanel panel = new ApiGenActionPanel(phpModule);
 		
 		DialogDescriptor dd = new DialogDescriptor(panel, NbBundle.getMessage(GenerateApiAction.class, "LBL_DialogTitle"), true, new ApiGenActionListener(panel, phpModule));
 		panel.setDialogDescriptor(dd);
