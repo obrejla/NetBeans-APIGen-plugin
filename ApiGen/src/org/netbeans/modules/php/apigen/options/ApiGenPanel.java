@@ -35,15 +35,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
-import org.openide.util.NbPreferences;
 
 public final class ApiGenPanel extends javax.swing.JPanel implements DocumentListener {
 
-	public static final String APIGEN_PATH_OPTION_KEY = "apigen_path";
+	private static final String APIGEN_FILE_NAME = "apigen.php"; // NOI18N
 
-	private static final String APIGEN_FILE_NAME = "apigen.php";
-
-	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/apigen/resources/error_icon.png", true);
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/apigen/resources/error_icon.png", true); // NOI18N
 
 	private final ApiGenOptionsPanelController controller;
 
@@ -52,6 +49,7 @@ public final class ApiGenPanel extends javax.swing.JPanel implements DocumentLis
 		initComponents();
 		apiGenPathTextField.getDocument().addDocumentListener(this);
 		errorLabel.setText("");
+		fileChooser.setCurrentDirectory(new File(ApiGenOptions.getPath()));
 		fileChooser.setFileFilter(new FileFilter() {
 
 			@Override
@@ -145,25 +143,11 @@ public final class ApiGenPanel extends javax.swing.JPanel implements DocumentLis
 	}//GEN-LAST:event_browseButtonActionPerformed
 
 	void load() {
-		// TODO read settings and initialize GUI
-		// Example:
-		// someCheckBox.setSelected(Preferences.userNodeForPackage(ApiGenPanel.class).getBoolean("someFlag", false));
-		// or for org.openide.util with API spec. version >= 7.4:
-		// someCheckBox.setSelected(NbPreferences.forModule(ApiGenPanel.class).getBoolean("someFlag", false));
-		// or:
-		// someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
-		apiGenPathTextField.setText(NbPreferences.forModule(ApiGenPanel.class).get(APIGEN_PATH_OPTION_KEY, ""));
+		apiGenPathTextField.setText(ApiGenOptions.getPath());
 	}
 
 	void store() {
-		// TODO store modified settings
-		// Example:
-		// Preferences.userNodeForPackage(ApiGenPanel.class).putBoolean("someFlag", someCheckBox.isSelected());
-		// or for org.openide.util with API spec. version >= 7.4:
-		// NbPreferences.forModule(ApiGenPanel.class).putBoolean("someFlag", someCheckBox.isSelected());
-		// or:
-		// SomeSystemOption.getDefault().setSomeStringProperty(someTextField.getText());
-		NbPreferences.forModule(ApiGenPanel.class).put(APIGEN_PATH_OPTION_KEY, apiGenPathTextField.getText());
+		ApiGenOptions.setPath(apiGenPathTextField.getText());
 	}
 
 	@Override
