@@ -33,11 +33,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import org.netbeans.api.options.OptionsDisplayer;
+import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.apigen.options.ApiGenOptions;
 import org.netbeans.modules.php.apigen.options.ApiGenPanel;
+import org.netbeans.modules.php.apigen.ui.ApiGenPreferences;
 import org.openide.DialogDescriptor;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
-import org.openide.util.NbPreferences;
 
 /**
  *
@@ -45,18 +48,23 @@ import org.openide.util.NbPreferences;
  */
 public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentListener, PreferenceChangeListener {
 
-	private static final String OUTPUT_CFG_FILE_TYPE = ".neon";
+	private static final String OUTPUT_CFG_FILE_TYPE = ".neon"; // NOI18N
 
 	private DialogDescriptor dd;
 
-	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/apigen/resources/error_icon.png", true);
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/apigen/resources/error_icon.png", true); // NOI18N
 
     /** Creates new form ApiGenActionPanel */
-    public ApiGenActionPanel() {
+    public ApiGenActionPanel(PhpModule phpModule) {
         initComponents();
-		errorLabel.setText("");
 
-		NbPreferences.forModule(ApiGenPanel.class).addPreferenceChangeListener(this);
+		setDocumentationTitle(ApiGenPreferences.getApiGenTitle(phpModule));
+		setSourceDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
+		setTargetDirectory(ApiGenPreferences.getApiGenTarget(phpModule));
+
+		errorLabel.setText(""); // NOI18N
+
+		ApiGenOptions.addPreferenceChangeListener(this);
 
 		outputCfgFileChooser.setFileFilter(new FileFilter() {
 
@@ -251,7 +259,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		OptionsDisplayer.getDefault().open(NbBundle.getMessage(ApiGenPanel.class, "MSG_OptionsPath"));
 	}//GEN-LAST:event_optionsLabelMouseReleased
 
-	public void setDocumentationTitle(String title) {
+	private void setDocumentationTitle(String title) {
 		documentationTitleTextField.setText(title);
 	}
 
@@ -268,7 +276,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		return outputCfgFileTextField.getText();
 	}
 
-	public void setSourceDirectory(String path) {
+	private void setSourceDirectory(String path) {
 		sourceDirectoryTextField.setText(path);
 		sourceDirectoryFileChooser.setCurrentDirectory(new File(path));
 	}
@@ -277,7 +285,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		return sourceDirectoryTextField.getText();
 	}
 
-	public void setTargetDirectory(String path) {
+	private void setTargetDirectory(String path) {
 		targetDirectoryTextField.setText(path);
 		targetDirectoryFileChooser.setCurrentDirectory(new File(path));
 	}
@@ -351,7 +359,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 			errorLabel.setIcon(errorIcon);
 			errorLabel.setText(NbBundle.getMessage(ApiGenActionPanel.class, "LBL_InvalidConfigFile"));
-		} else if (NbPreferences.forModule(ApiGenActionPanel.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, "").trim().isEmpty()) {
+		} else if (ApiGenOptions.getPath().trim().isEmpty()) {
 			dd.setValid(false);
 
 			errorLabel.setIcon(errorIcon);
