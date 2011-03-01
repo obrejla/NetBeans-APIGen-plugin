@@ -50,7 +50,7 @@ public class ApiGenPhpFrameworkProvider extends PhpFrameworkProvider {
     }
 
 	private ApiGenPhpFrameworkProvider() {
-        super("ApiGen", "ApiGen description");
+        super("ApiGen", "ApiGen description"); // NOI18N
     }
 
 	@Override
