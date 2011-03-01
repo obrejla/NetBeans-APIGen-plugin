@@ -35,14 +35,14 @@ import org.netbeans.api.extexecution.ExecutionService;
 import org.netbeans.api.extexecution.ExternalProcessBuilder;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.apigen.actions.GenerateApiAction;
-import org.netbeans.modules.php.apigen.options.ApiGenPanel;
+import org.netbeans.modules.php.apigen.options.ApiGenOptions;
+import org.netbeans.modules.php.apigen.ui.ApiGenPreferences;
 import org.netbeans.modules.php.project.ui.options.PhpOptions;
 import org.openide.DialogDescriptor;
 import org.openide.awt.HtmlBrowser;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
-import org.openide.util.NbPreferences;
 
 /**
  *
@@ -64,13 +64,16 @@ public class ApiGenActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == DialogDescriptor.OK_OPTION) {
+			ApiGenPreferences.setApiGenTarget(phpModule, panel.getTargetDirectory());
+			ApiGenPreferences.setApiGenTitle(phpModule, panel.getDocumentationTitle());
+
 			ExecutionDescriptor descriptor = new ExecutionDescriptor().frontWindow(true).controllable(true);
 
 			String path = PhpOptions.getInstance().getPhpInterpreter();
 
 			ExternalProcessBuilder processBuilder = new ExternalProcessBuilder(path)
 					.workingDirectory(FileUtil.toFile(phpModule.getSourceDirectory()))
-					.addArgument(NbPreferences.forModule(GenerateApiAction.class).get(ApiGenPanel.APIGEN_PATH_OPTION_KEY, ""))
+					.addArgument(ApiGenOptions.getPath())
 					.addArgument("-s")
 					.addArgument(panel.getSourceDirectory())
 					.addArgument("-d")
