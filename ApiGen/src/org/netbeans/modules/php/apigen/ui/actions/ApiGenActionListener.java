@@ -22,11 +22,12 @@
  *  THE SOFTWARE.
  */
 
-package org.netbeans.modules.php.apigen.actions.ui;
+package org.netbeans.modules.php.apigen.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import org.netbeans.api.extexecution.ExecutionDescriptor;
@@ -37,6 +38,7 @@ import org.netbeans.modules.php.apigen.actions.GenerateApiAction;
 import org.netbeans.modules.php.apigen.options.ApiGenPanel;
 import org.netbeans.modules.php.project.ui.options.PhpOptions;
 import org.openide.DialogDescriptor;
+import org.openide.awt.HtmlBrowser;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
@@ -72,14 +74,14 @@ public class ApiGenActionListener implements ActionListener {
 					.addArgument("-s")
 					.addArgument(panel.getSourceDirectory())
 					.addArgument("-d")
-					.addArgument(panel.getTargetDirectory());
+					.addArgument(panel.getTargetDirectory()); // NOI18N
 
 			if (!panel.getOutputCfgFile().trim().isEmpty()) {
-				processBuilder.addArgument("-c").addArgument(panel.getOutputCfgFile());
+				processBuilder.addArgument("-c").addArgument(panel.getOutputCfgFile()); // NOI18N
 			}
 
 			if (!panel.getDocumentationTitle().trim().isEmpty()) {
-				processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle());
+				processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle()); // NOI18N
 			}
 
 			final ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
@@ -92,6 +94,14 @@ public class ApiGenActionListener implements ActionListener {
 					try {
 						task.get();
 						FileUtil.refreshFor(new File(panel.getTargetDirectory()));
+						File index = new File(panel.getTargetDirectory(), "index.html"); // NOI18N
+						if (index.isFile()) {
+							try {
+								HtmlBrowser.URLDisplayer.getDefault().showURL(index.toURI().toURL());
+							} catch (MalformedURLException ex) {
+								Exceptions.printStackTrace(ex);
+							}
+						}
 					} catch (InterruptedException ex) {
 						Exceptions.printStackTrace(ex);
 					} catch (ExecutionException ex) {

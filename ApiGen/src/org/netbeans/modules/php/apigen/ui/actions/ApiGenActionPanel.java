@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.netbeans.modules.php.apigen.actions.ui;
+package org.netbeans.modules.php.apigen.ui.actions;
 
 import java.io.File;
 import java.util.prefs.PreferenceChangeEvent;

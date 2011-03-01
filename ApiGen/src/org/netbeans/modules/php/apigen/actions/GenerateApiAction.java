@@ -27,11 +27,11 @@
 
 package org.netbeans.modules.php.apigen.actions;
 
-import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionPanel;
+import org.netbeans.modules.php.apigen.ui.actions.ApiGenActionPanel;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.apigen.actions.ui.ApiGenActionListener;
+import org.netbeans.modules.php.apigen.ui.actions.ApiGenActionListener;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.filesystems.FileUtil;
