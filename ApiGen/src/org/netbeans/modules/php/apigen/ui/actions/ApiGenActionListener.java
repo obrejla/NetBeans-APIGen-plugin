@@ -66,6 +66,7 @@ public class ApiGenActionListener implements ActionListener {
 		if (e.getSource() == DialogDescriptor.OK_OPTION) {
 			ApiGenPreferences.setApiGenTarget(phpModule, panel.getTargetDirectory());
 			ApiGenPreferences.setApiGenTitle(phpModule, panel.getDocumentationTitle());
+			ApiGenPreferences.setApiGenConfig(phpModule, panel.getOutputCfgFile());
 
 			ExecutionDescriptor descriptor = new ExecutionDescriptor().frontWindow(true).controllable(true);
 
@@ -80,11 +81,11 @@ public class ApiGenActionListener implements ActionListener {
 					.addArgument(panel.getTargetDirectory()); // NOI18N
 
 			if (!panel.getOutputCfgFile().trim().isEmpty()) {
-				processBuilder.addArgument("-c").addArgument(panel.getOutputCfgFile()); // NOI18N
+				processBuilder = processBuilder.addArgument("-c").addArgument(panel.getOutputCfgFile()); // NOI18N
 			}
 
 			if (!panel.getDocumentationTitle().trim().isEmpty()) {
-				processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle()); // NOI18N
+				processBuilder = processBuilder.addArgument("-t").addArgument(panel.getDocumentationTitle()); // NOI18N
 			}
 
 			final ExecutionService service = ExecutionService.newService(processBuilder, descriptor, apiGenTab);
