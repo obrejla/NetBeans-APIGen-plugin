@@ -61,6 +61,8 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		setDocumentationTitle(ApiGenPreferences.getApiGenTitle(phpModule));
 		setSourceDirectory(FileUtil.toFile(phpModule.getSourceDirectory()).getAbsolutePath());
 		setTargetDirectory(ApiGenPreferences.getApiGenTarget(phpModule));
+		setOutputCfgFile(ApiGenPreferences.getApiGenConfig(phpModule));
+		outputCfgFileChooser.setCurrentDirectory(fetchOutputConfigCurrentDirectory(phpModule));
 
 		errorLabel.setText(""); // NOI18N
 
@@ -267,7 +269,7 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 		return documentationTitleTextField.getText();
 	}
 
-	public void setOutputCfgFile(String path) {
+	private void setOutputCfgFile(String path) {
 		outputCfgFileTextField.setText(path);
 		outputCfgFileChooser.setCurrentDirectory(new File(path));
 	}
@@ -292,6 +294,10 @@ public class ApiGenActionPanel extends javax.swing.JPanel implements DocumentLis
 
 	public String getTargetDirectory() {
 		return targetDirectoryTextField.getText();
+	}
+
+	private File fetchOutputConfigCurrentDirectory(PhpModule phpModule) {
+		return new File(ApiGenPreferences.getApiGenConfig(phpModule).trim().isEmpty() ? phpModule.getSourceDirectory().getPath() : ApiGenPreferences.getApiGenConfig(phpModule));
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
