@@ -39,11 +39,13 @@ public final class ApiGenPreferences {
 
     private static final String APIGEN_TITLE = "apigen-title"; // NOI18N
 
+	private static final String APIGEN_CONFIG = "apigen-config"; // NOI18N
+
 	private ApiGenPreferences() {
 	}
 
-	public static void setApiGenTarget(PhpModule phpModule, String phpDocTarget) {
-        getPreferences(phpModule).put(APIGEN_TARGET, phpDocTarget);
+	public static void setApiGenTarget(PhpModule phpModule, String target) {
+        getPreferences(phpModule).put(APIGEN_TARGET, target);
     }
 
 	public static String getApiGenTarget(PhpModule phpModule) {
@@ -65,6 +67,14 @@ public final class ApiGenPreferences {
 
 	public static String getApiGenTitle(PhpModule phpModule) {
         return getPreferences(phpModule).get(APIGEN_TITLE, getDefaultApiGenTitle(phpModule));
+    }
+
+	public static void setApiGenConfig(PhpModule phpModule, String config) {
+		getPreferences(phpModule).put(APIGEN_CONFIG, config);
+	}
+
+	public static String getApiGenConfig(PhpModule phpModule) {
+        return getPreferences(phpModule).get(APIGEN_CONFIG, "");
     }
 
 	private static Preferences getPreferences(PhpModule phpModule) {
